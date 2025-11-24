@@ -1,0 +1,108 @@
+﻿@model List<Admin>
+
+<h2>Berber Seç</h2>
+
+<div id="adminList">
+    @foreach (var admin in Model)
+    {
+        <button class="btn btn-primary m-1 adminBtn" data-id="@admin.Id">
+            @admin.Username
+        </button>
+    }
+</div>
+
+<div id="slotArea"></div>
+
+<!-- RANDEVU FORM MODAL -->
+<div class="modal" tabindex="-1" id="appointmentModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Randevu Bilgileri</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+
+                <input type="hidden" id="modalAdminId">
+                <input type="hidden" id="modalDateTime">
+
+                <label>İsim Soyisim</label>
+                <input class="form-control" id="customerName">
+
+                <label class="mt-2">Telefon</label>
+                <input class="form-control" id="customerPhone">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="saveApp">Randevuyu Oluştur</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        // ADMIN SEÇİLDİĞİNDE SLOT GETİR
+        $(".adminBtn").click(function () {
+            var adminId = $(this).data("id");
+
+            $.get("/Home/GetSlots?adminId=" + adminId, function (data) {
+
+                var html = "<h3>Uygun Saatler</h3><div class='row'>";
+
+                var currentDate = "";
+
+                data.forEach(s => {
+
+                    if (currentDate !== s.date) {
+                        currentDate = s.date;
+                        html += `<h4 class="mt-3">${currentDate}</h4>`;
+                    }
+
+                    if (s.status === "Müsait") {
+                        html += `
+                            <button class="btn btn-success m-1 slotBtn"
+                                    data-time="${s.fullDateTime}"
+                                    data-admin="${adminId}">
+                                ${s.time}
+                            </button>`;
+                    }
+                    else if (s.status === "Dolu") {
+                        html += `<button class="btn btn-danger m-1" disabled>Dolu</button>`;
+                    }
+                    else {
+                        html += `<button class="btn btn-secondary m-1" disabled>Kapalı</button>`;
+                    }
+                });
+
+                html += "</div>";
+
+                $("#slotArea").html(html);
+            });
+        });
+
+        // SLOT TIKLANINCA MODAL AÇ
+        $(document).on("click", ".slotBtn", function () {
+            $("#modalAdminId").val($(this).data("admin"));
+            $("#modalDateTime").val($(this).data("time"));
+            $("#appointmentModal").modal("show");
+        });
+
+        // RANDEVU KAYDET
+        $("#saveApp").click(function () {
+            $.post("/Home/CreateAppointment", {
+                adminId: $("#modalAdminId").val(),
+                dateTime: $("#modalDateTime").val(),
+                name: $("#customerName").val(),
+                phone: $("#customerPhone").val()
+            }, function (res) {
+                if (res.success) {
+                    alert("Randevunuz oluşturuldu!");
+                    location.reload();
+                }
+            });
+        });
+
+    </script>
+}
