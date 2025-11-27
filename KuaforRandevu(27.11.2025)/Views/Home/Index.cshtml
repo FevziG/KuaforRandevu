@@ -1,0 +1,168 @@
+﻿@model List<KuaforRandevu.Models.Admin>
+
+@{
+    ViewData["Title"] = "Randevu Sistemi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Kuaför İsmi</h2>
+        <a href="/Admin/AdminLogin" class="btn btn-outline-primary">Admin Giriş</a>
+    </div>
+
+    <div class="row g-3">
+        @foreach (var admin in Model)
+        {
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="admin-card text-center p-3" data-id="@admin.Id" style="cursor:pointer;">
+                    @* Eğer Photo byte[] ise base64 göster, yoksa boş resim göster *@
+                    @{
+                        string imgSrc = "";
+                        if (admin.GetType().GetProperty("Photo") != null)
+                        {
+                            var photoProp = admin.GetType().GetProperty("Photo").GetValue(admin);
+                            if (photoProp is byte[] bytes && bytes.Length > 0)
+                            {
+                                imgSrc = "data:image/png;base64," + Convert.ToBase64String(bytes);
+                            }
+                            else if (photoProp is string path && !string.IsNullOrEmpty(path))
+                            {
+                                imgSrc = path; // db'de yol saklıysa
+                            }
+                        }
+                    }
+
+                    <img src="@(string.IsNullOrEmpty(imgSrc) ? Url.Content("~/images/default-avatar.png") : imgSrc)"
+                         class="img-fluid admin-photo mb-2" style="height:160px; object-fit:cover; border-radius:8px;" />
+
+                    <h5 class="mb-0">@admin.Username</h5>
+                    <p class="text-muted small">Randevu almak için tıklayın</p>
+                </div>
+            </div>
+        }
+    </div>
+
+    <hr />
+
+    <div id="slotArea" class="mt-4">
+        <!-- Saatler buraya gelecek -->
+    </div>
+</div>
+
+<!-- RANDEVU MODAL -->
+<div class="modal fade" id="appointmentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Randevu Bilgileri</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="modalAdminId" />
+                <input type="hidden" id="modalDateTime" />
+
+                <div class="mb-2">
+                    <label for="customerName" class="form-label">İsim Soyisim</label>
+                    <input id="customerName" class="form-control" />
+                </div>
+
+                <div class="mb-2">
+                    <label for="customerPhone" class="form-label">Telefon</label>
+                    <input id="customerPhone" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveApp" type="button" class="btn btn-success">Randevuyu Oluştur</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+@* Eğer layout'unuz zaten jquery/bootstrap yüklüyorsa bu script tag'lerini tekrar etmenize gerek yok.
+           Ancak çalışmadığını görürsen alt satırları aktif bırakabilirsiniz. *@
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        // Admin karta tıklanınca slotları getir
+        $(document).on("click", ".admin-card", function () {
+            var adminId = $(this).data("id");
+
+            $.get("/Home/GetSlots", { adminId: adminId }, function (data) {
+                var html = "<h3>Uygun Saatler</h3><div class='d-flex flex-wrap'>";
+                var currentDate = "";
+
+                data.forEach(s => {
+                    if (currentDate !== s.date) {
+                        currentDate = s.date;
+                        html += `<div class="w-100"><h5 class="mt-3">${currentDate}</h5></div>`;
+                    }
+
+                    if (s.status === "Müsait") {
+                        html += `
+                            <button class="btn btn-success m-1 slotBtn"
+                                    data-time="${s.fullDateTime}"
+                                    data-admin="${adminId}">
+                                ${s.time}
+                            </button>`;
+                    } else if (s.status === "Dolu") {
+                        html += `<button class="btn btn-danger m-1" disabled>Dolu</button>`;
+                    } else {
+                        html += `<button class="btn btn-secondary m-1" disabled>Kapalı</button>`;
+                    }
+                });
+
+                html += "</div>";
+                $("#slotArea").html(html);
+            });
+        });
+
+        // Slot butonuna tıklanınca modal aç (delegated event)
+        $(document).on("click", ".slotBtn", function () {
+            var adminId = $(this).data("admin");
+            var dateTime = $(this).data("time");
+
+            $("#modalAdminId").val(adminId);
+            $("#modalDateTime").val(dateTime);
+
+            // Bootstrap modal göster
+            var modalEl = new bootstrap.Modal(document.getElementById('appointmentModal'));
+            modalEl.show();
+        });
+
+        // Randevu kaydet
+        $(document).on("click", "#saveApp", function () {
+            var adminId = $("#modalAdminId").val();
+            var dateTime = $("#modalDateTime").val();
+            var name = $("#customerName").val();
+            var phone = $("#customerPhone").val();
+
+            if (!name || !phone) {
+                alert("Lütfen isim ve telefon bilgilerini girin.");
+                return;
+            }
+
+            $.post("/Home/CreateAppointment", {
+                adminId: adminId,
+                dateTime: dateTime,
+                name: name,
+                phone: phone
+            }, function (res) {
+                if (res && res.success) {
+                    alert("Randevunuz oluşturuldu!");
+                    location.reload();
+                } else {
+                    alert("Randevu oluşturulurken hata oluştu.");
+                }
+            }).fail(function () {
+                alert("Sunucuya bağlanırken hata oluştu.");
+            });
+        });
+    </script>
+}
