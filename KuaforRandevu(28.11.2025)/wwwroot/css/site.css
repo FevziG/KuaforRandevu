@@ -1,0 +1,135 @@
+/* ====== GENEL ====== */
+body {
+    background: #f4f6f9;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* ====== ÜST BAR ====== */
+.container h2 {
+    font-weight: 600;
+}
+
+.btn-outline-primary {
+    border-radius: 30px;
+    padding: 8px 18px;
+    font-weight: 500;
+}
+
+/* ====== ADMÝN KARTLAR ====== */
+.admin-card {
+    background: #fff;
+    border-radius: 16px;
+    transition: 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    height: 100%;
+}
+
+    .admin-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+    }
+
+.admin-photo {
+    border-radius: 12px;
+    width: 100%;
+}
+
+.admin-card h5 {
+    margin-top: 10px;
+    font-size: 18px;
+    text-transform: capitalize;
+}
+
+.admin-card p {
+    font-size: 14px;
+}
+
+/* ====== SLOT ALANI ====== */
+#slotArea {
+    padding: 20px;
+}
+
+    #slotArea h3 {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    #slotArea h5 {
+        font-weight: 600;
+    }
+
+.slotBtn {
+    min-width: 90px;
+    border-radius: 25px;
+}
+
+/* ====== MODAL ====== */
+.modal-content {
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+.modal-body input {
+    border-radius: 12px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+#saveApp {
+    border-radius: 20px;
+    padding: 8px 20px;
+}
+
+/* ====== MOBÝL UYUMLULUK ====== */
+@media (max-width: 768px) {
+
+    .container {
+        padding: 0 10px;
+    }
+
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .btn-outline-primary {
+        width: 100%;
+    }
+
+    .admin-card {
+        margin-bottom: 20px;
+    }
+
+    #slotArea {
+        text-align: center;
+    }
+
+    .slotBtn {
+        width: 40%;
+        margin: 5px !important;
+    }
+
+    .modal-dialog {
+        margin: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .slotBtn {
+        width: 100%;
+    }
+
+    .admin-photo {
+        height: 180px !important;
+    }
+}
