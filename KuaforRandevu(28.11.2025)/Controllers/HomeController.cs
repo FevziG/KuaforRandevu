@@ -26,7 +26,7 @@ public class HomeController : Controller
             .Select(b => b.BlockedDateTime)
             .ToList();
 
-        // ❗ Artık status filtrelemesi YOK — iptal hariç tüm randevular DOLU kabul edilir
+        // ❗ Artık status filtrelemesi YOK — iptal hariç tüm randevular DOLU kabul edilir.
         var appointments = _context.Appointments
             .Where(a => a.AdminId == adminId && a.Status != "İptal")
             .Select(a => a.AppointmentDateTime)

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KuaforRandevu")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+42babbeb055a6748586cc11c0a627023916b28b1")]
 [assembly: System.Reflection.AssemblyProductAttribute("KuaforRandevu")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KuaforRandevu")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

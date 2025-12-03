@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "paPyL7WO+7c=",
+  "dgSpecHash": "LDl8lDfRgQk=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Fvz_g\\Desktop\\Projeler\\KuaforRandevu\\KuaforRandevu.csproj",
+  "projectFilePath": "C:\\Calısmalarım\\KuaforRandevu\\KuaforRandevu(28.11.2025)\\KuaforRandevu.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Fvz_g\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Fvz_g\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

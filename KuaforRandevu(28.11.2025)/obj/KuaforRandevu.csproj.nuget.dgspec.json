@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Fvz_g\\Desktop\\Projeler\\KuaforRandevu\\KuaforRandevu.csproj": {}
+    "C:\\Calısmalarım\\KuaforRandevu\\KuaforRandevu(28.11.2025)\\KuaforRandevu.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Fvz_g\\Desktop\\Projeler\\KuaforRandevu\\KuaforRandevu.csproj": {
+    "C:\\Calısmalarım\\KuaforRandevu\\KuaforRandevu(28.11.2025)\\KuaforRandevu.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Fvz_g\\Desktop\\Projeler\\KuaforRandevu\\KuaforRandevu.csproj",
+        "projectUniqueName": "C:\\Calısmalarım\\KuaforRandevu\\KuaforRandevu(28.11.2025)\\KuaforRandevu.csproj",
         "projectName": "KuaforRandevu",
-        "projectPath": "C:\\Users\\Fvz_g\\Desktop\\Projeler\\KuaforRandevu\\KuaforRandevu.csproj",
+        "projectPath": "C:\\Calısmalarım\\KuaforRandevu\\KuaforRandevu(28.11.2025)\\KuaforRandevu.csproj",
         "packagesPath": "C:\\Users\\Fvz_g\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Fvz_g\\Desktop\\Projeler\\KuaforRandevu\\obj\\",
+        "outputPath": "C:\\Calısmalarım\\KuaforRandevu\\KuaforRandevu(28.11.2025)\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
